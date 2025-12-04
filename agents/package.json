@@ -1,0 +1,27 @@
+{
+  "name": "hospital-ai-agents",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start:intake": "node intake-agent/index.js",
+    "start:rag": "node rag-indexer-agent/index.js",
+    "start:diagnostics": "node diagnostics-agent/index.js",
+    "start:billing": "node billing-agent/index.js",
+    "start:security": "node security-agent/index.js",
+    "start:all": "concurrently \"npm:watch:intake\" \"npm:watch:rag\" \"npm:watch:diagnostics\" \"npm:watch:billing\" \"npm:watch:security\"",
+    "watch:intake": "nodemon --watch ./ -e js --exec node intake-agent/index.js",
+    "watch:rag": "nodemon --watch ./ -e js --exec node rag-indexer-agent/index.js",
+    "watch:diagnostics": "nodemon --watch ./ -e js --exec node diagnostics-agent/index.js",
+    "watch:billing": "nodemon --watch ./ -e js --exec node billing-agent/index.js",
+    "watch:security": "nodemon --watch ./ -e js --exec node security-agent/index.js"
+  },
+  "dependencies": {
+    "bullmq": "^5.0.0",
+    "dotenv": "^16.0.0",
+    "mongoose": "^7.0.0",
+    "openai": "^4.12.0",
+    "axios": "^1.4.0",
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.22"
+  }
+}
