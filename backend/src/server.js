@@ -30,5 +30,5 @@ app.use("/api/security", securityRoutes);
 
 app.get("/", (req, res) => res.send("Hospital AI Backend Running"));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Backend running on ${PORT}`));
