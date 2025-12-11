@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Worker } from "bullmq";
 import { redisConnection } from "../../common/redisConnection.js";
 import { connectDB, Embedding, Diagnostic, Document } from "../../common/db.js";
-import { embedText, chatCompletion } from "../../common/openaiClient.js";
+import { embedText, chatCompletion } from "../../common/geminiClient.js";
 import { topKSearch } from "../../common/vecUtils.js";
 
 await connectDB(process.env.MONGO_URI);

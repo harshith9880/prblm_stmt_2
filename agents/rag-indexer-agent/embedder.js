@@ -1,4 +1,4 @@
-import { embedText } from "../../common/openaiClient.js";
+import { embedText } from "../../common/geminiClient.js";
 
 /**
  * embedChunks: given array of strings, returns array of vectors

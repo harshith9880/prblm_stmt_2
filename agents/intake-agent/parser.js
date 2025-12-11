@@ -1,4 +1,4 @@
-import { embedText, chatCompletion } from "../../common/openaiClient.js";
+import { embedText, chatCompletion } from "../../common/geminiClient.js";
 import { Document, Patient } from "../../common/db.js";
 
 /**

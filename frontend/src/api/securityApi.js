@@ -1,5 +1,5 @@
 import axios from "axios";
-const API = "http://localhost:5001/api";
+const API = "http://localhost:5000/api";
 
 export const logAccess = (data) =>
   axios.post(`${API}/security/log`, data);
