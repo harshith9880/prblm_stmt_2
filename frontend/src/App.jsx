@@ -3,6 +3,8 @@ import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import PatientPage from "./pages/PatientPage";
 import SecurityPage from "./pages/SecurityPage";
+import SignupPage from "./pages/SignupPage";
+
 
 export default function App() {
   return (
@@ -12,6 +14,7 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/patient/:id" element={<PatientPage />} />
         <Route path="/security" element={<SecurityPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </div>
   );

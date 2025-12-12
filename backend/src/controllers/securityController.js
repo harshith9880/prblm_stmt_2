@@ -1,4 +1,4 @@
-import AuditLog from "../models/AuditLog.js";
+import { Audit as AuditLog } from "../../../common/db.js";
 import { securityQueue } from "../queues/redisQueues.js";
 
 export const logAccess = async (req, res) => {

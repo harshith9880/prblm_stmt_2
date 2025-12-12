@@ -1,5 +1,4 @@
-import Patient from "../models/Patient.js";
-import Document from "../models/Document.js";
+import { Patient, Document } from "../../../common/db.js";
 import { intakeQueue } from "../queues/redisQueues.js";
 import { fileToBase64 } from "../utils/upload.js";
 

@@ -4,16 +4,17 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import fileUpload from "express-fileupload";
-import connectDB from "./config/db.js";
+import { connectDB } from "../../common/db.js";
 
 import intakeRoutes from "./routes/intakeRoutes.js";
 import diagnosticsRoutes from "./routes/diagnosticsRoutes.js";
 import billingRoutes from "./routes/billingRoutes.js";
 import patientRoutes from "./routes/patientRoutes.js";
 import securityRoutes from "./routes/securityRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
-connectDB();
+connectDB(process.env.MONGO_URI);
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/diagnostics", diagnosticsRoutes);
 app.use("/api/billing", billingRoutes);
 app.use("/api/patients", patientRoutes);
 app.use("/api/security", securityRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => res.send("Hospital AI Backend Running"));
 

@@ -1,5 +1,5 @@
-import Patient from "../models/Patient.js";
-import Document from "../models/Document.js";
+import { Patient, Document } from "../../../common/db.js";
+
 
 export const listPatients = async (req, res) => {
   const patients = await Patient.find().sort({ createdAt: -1 });

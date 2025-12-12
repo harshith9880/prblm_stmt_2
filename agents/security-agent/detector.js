@@ -30,5 +30,23 @@ export async function detectAnomaly(event) {
     };
   }
 
+  if (action === "login_attempt") {
+    const since = new Date(Date.now() - 60_000);
+
+    const attempts = await Audit.find({
+      actor,
+      action: "login_attempt",
+      timestamp: { $gte: since }
+    });
+
+    if (attempts.length >= 5) {
+      return {
+        reason: "multiple_failed_logins",
+        attempts: attempts.length,
+        detail: event
+      };
+    }
+  }
+
   return null;
 }
