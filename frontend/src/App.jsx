@@ -1,18 +1,24 @@
-import { Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import PatientPage from "./pages/PatientPage";
-import SecurityPage from "./pages/SecurityPage";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useApp } from './context';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import PatientPage from './pages/PatientPage';
+import SecurityPage from './pages/SecurityPage';
 
-export default function App() {
+function App() {
+  const { user } = useApp();
+
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/patient/:id" element={<PatientPage />} />
-        <Route path="/security" element={<SecurityPage />} />
+        <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/dashboard" />} />
+        <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/login" />} />
+        <Route path="/patient/:id" element={user ? <PatientPage /> : <Navigate to="/login" />} />
+        <Route path="/security" element={user ? <SecurityPage /> : <Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
       </Routes>
-    </div>
+    </Router>
   );
 }
+
+export default App;
