@@ -1,5 +1,5 @@
 import { diagnosticsQueue } from "../queues/redisQueues.js";
-import Diagnostic from "../models/Diagnostic.js";
+import { Diagnostic } from "../../../common/db.js";
 
 /**
  * Enqueue diagnostic request
