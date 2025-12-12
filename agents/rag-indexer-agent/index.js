@@ -2,34 +2,44 @@ import "dotenv/config";
 import { Worker } from "bullmq";
 import { redisConnection } from "../../common/redisConnection.js";
 import { connectDB, Embedding } from "../../common/db.js";
+
 import { chunkText } from "./chunker.js";
 import { embedChunks } from "./embedder.js";
 
 await connectDB(process.env.MONGO_URI);
 
-new Worker("rag", async job => {
-  console.log("[RAG Indexer] job:", job.id, job.name, job.data);
-  // job.data expected { patientId, docId, text }
-  const { patientId, docId, text } = job.data;
-  // chunk
-  const chunks = chunkText(text, { size: 700, overlap: 100 });
-  // embed chunks
-  const vectors = await embedChunks(chunks);
-  // store each chunk + vector
-  const stores = vectors.map((v, i) => ({
-    patientId,
-    docId,
-    chunkId: `${docId}::${i}`,
-    text: chunks[i],
-    vector: v
-  }));
-  // bulk insert
-  await Embedding.insertMany(stores);
-  console.log(`[RAG Indexer] indexed ${stores.length} chunks for doc ${docId}`);
-  return { indexed: stores.length };
-},
-{
-    connection: redisConnection,
-  });
+console.log("🔵 RAG Indexer Agent is running…");
 
-console.log("RAG Indexer running and listening to 'rag' queue");
+new Worker(
+  "rag",
+  async job => {
+    console.log("\n==============================");
+    console.log("[RAG] New job:", job.id, job.data);
+    console.log("==============================\n");
+
+    const { patientId, docId, text } = job.data;
+
+    // 1) Chunk text
+    const chunks = chunkText(text, { size: 450, overlap: 80 });
+
+    // 2) Embed chunks
+    const vectors = await embedChunks(chunks);
+
+    // 3) Prepare DB documents
+    const items = chunks.map((chunk, i) => ({
+      patientId,
+      docId,
+      chunkId: `${docId}::${i}`,
+      text: chunk,
+      vector: vectors[i]
+    }));
+
+    // 4) Insert into MongoDB
+    await Embedding.insertMany(items);
+
+    console.log(`[RAG] ✔ Indexed ${items.length} chunks for doc ${docId}\n`);
+
+    return { indexed: items.length };
+  },
+  { connection: redisConnection }
+);

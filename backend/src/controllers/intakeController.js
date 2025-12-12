@@ -8,24 +8,29 @@ export const patientIntake = async (req, res) => {
     const { name, age } = req.body;
     const file = req.files?.file;
 
+    // Extract raw text from uploaded file
+    const rawText = file ? file.data.toString("utf8") : "";
+
+    // Convert file to base64 (optional)
     const base64 = file ? fileToBase64(file) : null;
 
-    // Create patient skeleton
+    // Create patient shell
     const patient = await Patient.create({ name, age });
 
-    // Store raw document (for viewing later)
+    // Save uploaded document to database
     await Document.create({
       patientId: patient._id,
-      text: file ? file.data.toString("utf8") : "",
-      source: "upload"
+      text: rawText,
+      source: "upload",
     });
 
-    // Add to Intake Agent
+    // Send full text to intake agent
     await intakeQueue.add("intake", {
       name,
       age,
       patientId: patient._id.toString(),
-      base64File: base64
+      rawText,       // 🔥 IMPORTANT: send text for RAG
+      base64File: base64,
     });
 
     res.json({ success: true, patientId: patient._id });

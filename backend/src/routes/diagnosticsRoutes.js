@@ -1,7 +1,9 @@
 import express from "express";
-import { runDiagnostics } from "../controllers/diagnosticsController.js";
+import { runDiagnostics, getDiagnostics } from "../controllers/diagnosticsController.js";
 
 const router = express.Router();
+
 router.post("/", runDiagnostics);
+router.get("/:patientId", getDiagnostics);
 
 export default router;
