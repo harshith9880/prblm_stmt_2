@@ -1,19 +1,20 @@
-import { embedText } from "../../common/openaiClient.js";
+import { embedTextBERT } from "../../common/bertEmbedder.js";
 
-/**
- * embedChunks: given array of strings, returns array of vectors
- */
 export async function embedChunks(chunks) {
-  const vecs = [];
-  for (let c of chunks) {
+  const vectors = [];
+
+  for (const text of chunks) {
     try {
-      const v = await embedText(c);
-      vecs.push(v);
+      const vec = await embedTextBERT(text);
+      console.log("[RAG] Chunk embedded. Dim:", vec.length);
+      vectors.push(vec);
     } catch (err) {
-      console.error("[embedChunks] OpenAI error:", err);
-      // on error push zero vector fallback
-      vecs.push(new Array(1536).fill(0));
+      console.error("[RAG] BERT embedding error:", err);
+
+      // BERT output = 768 dims ALWAYS
+      vectors.push(new Array(768).fill(0));
     }
   }
-  return vecs;
+
+  return vectors;
 }

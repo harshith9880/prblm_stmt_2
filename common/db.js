@@ -60,3 +60,10 @@ const AuditSchema = new mongoose.Schema({
   meta: Object
 });
 export const Audit = mongoose.model("Audit", AuditSchema);
+
+const UserSchema = new mongoose.Schema({
+  username: String,
+  passwordHash: String,
+  createdAt: { type: Date, default: Date.now }
+});
+export const User = mongoose.model("User", UserSchema);
