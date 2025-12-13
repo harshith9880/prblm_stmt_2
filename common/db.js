@@ -19,7 +19,7 @@ export const Patient = mongoose.model("Patient", PatientSchema);
 
 const DocumentSchema = new mongoose.Schema({
   patientId: mongoose.Schema.Types.ObjectId,
-  originalText: String,
+  text: String,
   source: String,
   createdAt: { type: Date, default: Date.now }
 });
